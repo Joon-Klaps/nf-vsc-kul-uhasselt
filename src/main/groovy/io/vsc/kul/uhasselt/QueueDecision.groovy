@@ -19,8 +19,10 @@ import nextflow.util.Duration
 @CompileStatic
 @ToString(includeNames = true)
 class QueueDecision {
+
     String queue
     String moduleLoadQueue
     String clusterOptions
     Duration cappedTime
+
 }

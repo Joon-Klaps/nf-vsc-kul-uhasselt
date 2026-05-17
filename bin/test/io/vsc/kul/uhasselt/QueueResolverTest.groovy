@@ -29,15 +29,15 @@ class QueueResolverTest extends Specification {
             def d = r.resolve('genius', MemoryUnit.of(mem), Duration.of(time), 4, null, 'lp_test')
         then:
             d.queue == expectedQueue
-            d.cappedTime == null
-            d.clusterOptions == expectedClusterOpts
+        d.cappedTime == null
+        d.clusterOptions == expectedClusterOpts
         where:
             mem      | time   | dedicated                  || expectedQueue            | expectedClusterOpts
-            '4 GB'   | '1h'   | []                         || 'batch'                  | '--clusters=genius --account=lp_test'
-            '4 GB'   | '72h'  | []                         || 'batch_long'             | '--clusters=genius --account=lp_test'
-            '175 GB' | '1h'   | []                         || 'bigmem'                 | '--clusters=genius --account=lp_test'
-            '200 GB' | '72h'  | []                         || 'bigmem_long'            | '--clusters=genius --account=lp_test'
-            '200 GB' | '72h'  | ['dedicated_big_bigmem']   || 'dedicated_big_bigmem'   | '--clusters=genius --account=lp_big_genius_cpu'
+        '4 GB'   | '1h'   | []                         || 'batch'                  | '--clusters=genius --account=lp_test'
+        '4 GB'   | '72h'  | []                         || 'batch_long'             | '--clusters=genius --account=lp_test'
+        '175 GB' | '1h'   | []                         || 'bigmem'                 | '--clusters=genius --account=lp_test'
+        '200 GB' | '72h'  | []                         || 'bigmem_long'            | '--clusters=genius --account=lp_test'
+        '200 GB' | '72h'  | ['dedicated_big_bigmem']   || 'dedicated_big_bigmem'   | '--clusters=genius --account=lp_big_genius_cpu'
     }
 
     @Unroll
@@ -48,16 +48,16 @@ class QueueResolverTest extends Specification {
             def d = r.resolve('genius_gpu', MemoryUnit.of(mem), Duration.of(time), 9, null, 'lp_test')
         then:
             d.queue == expectedQueue
-            d.clusterOptions == "--gres=gpu:1 --clusters=genius --account=lp_test"
+        d.clusterOptions == '--gres=gpu:1 --clusters=genius --account=lp_test'
         where:
             mem      | time   | dedicated                  || expectedQueue
-            '4 GB'   | '1h'   | []                         || 'gpu_p100'
-            '4 GB'   | '1h'   | ['amd']                    || 'amd'
-            '4 GB'   | '72h'  | []                         || 'gpu_p100_long'
-            '4 GB'   | '72h'  | ['amd']                    || 'amd_long'
-            '4 GB'   | '72h'  | ['dedicated_rega_gpu']     || 'dedicated_rega_gpu'
-            '200 GB' | '1h'   | []                         || 'gpu_v100'
-            '200 GB' | '72h'  | []                         || 'gpu_v100_long'
+        '4 GB'   | '1h'   | []                         || 'gpu_p100'
+        '4 GB'   | '1h'   | ['amd']                    || 'amd'
+        '4 GB'   | '72h'  | []                         || 'gpu_p100_long'
+        '4 GB'   | '72h'  | ['amd']                    || 'amd_long'
+        '4 GB'   | '72h'  | ['dedicated_rega_gpu']     || 'dedicated_rega_gpu'
+        '200 GB' | '1h'   | []                         || 'gpu_v100'
+        '200 GB' | '72h'  | []                         || 'gpu_v100_long'
     }
 
     @Unroll
@@ -68,15 +68,15 @@ class QueueResolverTest extends Specification {
             def d = r.resolve('wice', MemoryUnit.of(mem), Duration.of(time), 4, null, 'lp_test')
         then:
             d.queue == expectedQueue
-            (d.cappedTime != null) == expectCap
-            d.clusterOptions == expectedClusterOpts
+        (d.cappedTime != null) == expectCap
+        d.clusterOptions == expectedClusterOpts
         where:
             mem      | time   | dedicated                  || expectedQueue                                              | expectCap | expectedClusterOpts
-            '4 GB'   | '1h'   | []                         || 'batch,batch_sapphirerapids,batch_icelake'                 | false     | '--clusters=wice --account=lp_test'
-            '4 GB'   | '72h'  | []                         || 'batch_long,batch_icelake_long,batch_sapphirerapids_long'  | false     | '--clusters=wice --account=lp_test'
-            '300 GB' | '1h'   | []                         || 'bigmem,hugemem'                                           | false     | '--clusters=wice --account=lp_test'
-            '300 GB' | '120h' | []                         || 'bigmem,hugemem'                                           | true      | '--clusters=wice --account=lp_test'
-            '300 GB' | '120h' | ['dedicated_big_bigmem']   || 'dedicated_big_bigmem'                                     | false     | '--clusters=wice --account=lp_big_wice_cpu'
+        '4 GB'   | '1h'   | []                         || 'batch,batch_sapphirerapids,batch_icelake'                 | false     | '--clusters=wice --account=lp_test'
+        '4 GB'   | '72h'  | []                         || 'batch_long,batch_icelake_long,batch_sapphirerapids_long'  | false     | '--clusters=wice --account=lp_test'
+        '300 GB' | '1h'   | []                         || 'bigmem,hugemem'                                           | false     | '--clusters=wice --account=lp_test'
+        '300 GB' | '120h' | []                         || 'bigmem,hugemem'                                           | true      | '--clusters=wice --account=lp_test'
+        '300 GB' | '120h' | ['dedicated_big_bigmem']   || 'dedicated_big_bigmem'                                     | false     | '--clusters=wice --account=lp_big_wice_cpu'
     }
 
     @Unroll
@@ -87,16 +87,16 @@ class QueueResolverTest extends Specification {
             def d = r.resolve('wice_gpu', MemoryUnit.of(mem), Duration.of(time), 16, null, 'lp_test')
         then:
             d.queue == expectedQueue
-            (d.cappedTime != null) == expectCap
-            d.clusterOptions == expectedClusterOpts
+        (d.cappedTime != null) == expectCap
+        d.clusterOptions == expectedClusterOpts
         where:
             mem      | time   | dedicated                        || expectedQueue              | expectCap | expectedClusterOpts
-            '4 GB'   | '1h'   | []                               || 'gpu_a100,gpu'             | false     | '--clusters=wice --account=lp_test --gres=gpu:1'
-            '4 GB'   | '120h' | []                               || 'gpu_a100,gpu'             | true      | '--clusters=wice --account=lp_test --gres=gpu:1'
-            '4 GB'   | '120h' | ['dedicated_big_gpu']            || 'dedicated_big_gpu'        | false     | '--clusters=wice --account=lp_big_wice_gpu --gres=gpu:1'
-            '300 GB' | '1h'   | []                               || 'gpu_h100'                 | false     | '--clusters=wice --account=lp_test --gres=gpu:1'
-            '300 GB' | '120h' | []                               || 'gpu_h100'                 | true      | '--clusters=wice --account=lp_test --gres=gpu:1'
-            '300 GB' | '120h' | ['dedicated_big_gpu_h100']       || 'dedicated_big_gpu_h100'   | false     | '--clusters=wice --account=lp_big_wice_gpu_h100 --gres=gpu:1'
+        '4 GB'   | '1h'   | []                               || 'gpu_a100,gpu'             | false     | '--clusters=wice --account=lp_test --gres=gpu:1'
+        '4 GB'   | '120h' | []                               || 'gpu_a100,gpu'             | true      | '--clusters=wice --account=lp_test --gres=gpu:1'
+        '4 GB'   | '120h' | ['dedicated_big_gpu']            || 'dedicated_big_gpu'        | false     | '--clusters=wice --account=lp_big_wice_gpu --gres=gpu:1'
+        '300 GB' | '1h'   | []                               || 'gpu_h100'                 | false     | '--clusters=wice --account=lp_test --gres=gpu:1'
+        '300 GB' | '120h' | []                               || 'gpu_h100'                 | true      | '--clusters=wice --account=lp_test --gres=gpu:1'
+        '300 GB' | '120h' | ['dedicated_big_gpu_h100']       || 'dedicated_big_gpu_h100'   | false     | '--clusters=wice --account=lp_big_wice_gpu_h100 --gres=gpu:1'
     }
 
     @Unroll
@@ -105,13 +105,13 @@ class QueueResolverTest extends Specification {
             def d = resolver().resolve('superdome', MemoryUnit.of('4 GB'), Duration.of(time), 4, null, 'lp_test')
         then:
             d.queue == expectedQueue
-            d.moduleLoadQueue == 'superdome'
-            d.clusterOptions == '--clusters=genius --account=lp_test'
+        d.moduleLoadQueue == 'superdome'
+        d.clusterOptions == '--clusters=genius --account=lp_test'
         where:
             time   || expectedQueue
-            '1h'   || 'superdome'
-            '72h'  || 'superdome'      // boundary: <= 72h means 'superdome' per original closure
-            '73h'  || 'superdome_long'
+        '1h'   || 'superdome'
+        '72h'  || 'superdome'      // boundary: <= 72h means 'superdome' per original closure
+        '73h'  || 'superdome_long'
     }
 
     @Unroll
@@ -120,10 +120,10 @@ class QueueResolverTest extends Specification {
             QueueResolver.firstPartition(queue) == expectedFirst
         where:
             queue                                                      || expectedFirst
-            'batch'                                                    || 'batch'
-            'bigmem,hugemem'                                           || 'bigmem'
-            'batch_long,batch_icelake_long,batch_sapphirerapids_long'  || 'batch_long'
-            'gpu_a100,gpu'                                             || 'gpu_a100'
+        'batch'                                                    || 'batch'
+        'bigmem,hugemem'                                           || 'bigmem'
+        'batch_long,batch_icelake_long,batch_sapphirerapids_long'  || 'batch_long'
+        'gpu_a100,gpu'                                             || 'gpu_a100'
     }
 
     @Unroll
@@ -132,16 +132,16 @@ class QueueResolverTest extends Specification {
             QueueResolver.inferGpuCount(cpus, acc, cpg) == expected
         where:
             cpus | acc  | cpg || expected
-            null | null | 9   || 1
-            8    | null | 9   || 1
-            9    | null | 9   || 1
-            18   | null | 9   || 2
-            36   | null | 9   || 4
-            16   | null | 16  || 1
-            32   | null | 16  || 2
-            64   | null | 16  || 4
-            36   | 3    | 9   || 3      // explicit accelerator wins
-            8    | 2    | 9   || 2
+        null | null | 9   || 1
+        8    | null | 9   || 1
+        9    | null | 9   || 1
+        18   | null | 9   || 2
+        36   | null | 9   || 4
+        16   | null | 16  || 1
+        32   | null | 16  || 2
+        64   | null | 16  || 4
+        36   | 3    | 9   || 3      // explicit accelerator wins
+        8    | 2    | 9   || 2
     }
 
     def 'wice CPU caps task time when high-mem long-running without a dedicated queue'() {
@@ -164,4 +164,5 @@ class QueueResolverTest extends Specification {
         then:
             thrown(IllegalArgumentException)
     }
+
 }

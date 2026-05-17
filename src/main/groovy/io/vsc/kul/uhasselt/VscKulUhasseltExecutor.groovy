@@ -42,8 +42,8 @@ class VscKulUhasseltExecutor extends SlurmExecutor {
         final dedicated        = parseDedicatedQueues(dedicatedString)
 
         final timeThreshold       = parseDuration(configValue('timeThreshold',      '72h'))
-        final geniusMemThreshold  = parseMemory(  configValue('geniusMemThreshold', '175 GB'))
-        final wiceMemThreshold    = parseMemory(  configValue('wiceMemThreshold',   '239 GB'))
+        final geniusMemThreshold  = parseMemory(configValue('geniusMemThreshold', '175 GB'))
+        final wiceMemThreshold    = parseMemory(configValue('wiceMemThreshold',   '239 GB'))
 
         this.resolver = new QueueResolver(timeThreshold, geniusMemThreshold, wiceMemThreshold, dedicated)
 
@@ -124,4 +124,5 @@ class VscKulUhasseltExecutor extends SlurmExecutor {
         if (v instanceof MemoryUnit) return (MemoryUnit) v
         return MemoryUnit.of(v.toString())
     }
+
 }

@@ -26,19 +26,19 @@ profiles {
 
 The executor reads three environment variables at startup, each overridable via config:
 
-| Env var                 | Config key                                       | Default      |
-| ----------------------- | ------------------------------------------------ | ------------ |
-| `VSC_SCRATCH`           | `executor.'vsc-kul-uhasselt'.scratchDir`         | `/tmp`       |
-| `SLURM_ACCOUNT`         | `executor.'vsc-kul-uhasselt'.account`            | (unset)      |
-| `VSC_DEDICATED_QUEUES`  | `executor.'vsc-kul-uhasselt'.dedicatedQueues`    | `` (empty)   |
+| Env var                | Config key                                    | Default    |
+| ---------------------- | --------------------------------------------- | ---------- |
+| `VSC_SCRATCH`          | `executor.'vsc-kul-uhasselt'.scratchDir`      | `/tmp`     |
+| `SLURM_ACCOUNT`        | `executor.'vsc-kul-uhasselt'.account`         | (unset)    |
+| `VSC_DEDICATED_QUEUES` | `executor.'vsc-kul-uhasselt'.dedicatedQueues` | `` (empty) |
 
 Queue selection thresholds are also tunable:
 
-| Key                                                        | Default    |
-| ---------------------------------------------------------- | ---------- |
-| `executor.'vsc-kul-uhasselt'.timeThreshold`                | `'72h'`    |
-| `executor.'vsc-kul-uhasselt'.geniusMemThreshold`           | `'175 GB'` |
-| `executor.'vsc-kul-uhasselt'.wiceMemThreshold`             | `'239 GB'` |
+| Key                                              | Default    |
+| ------------------------------------------------ | ---------- |
+| `executor.'vsc-kul-uhasselt'.timeThreshold`      | `'72h'`    |
+| `executor.'vsc-kul-uhasselt'.geniusMemThreshold` | `'175 GB'` |
+| `executor.'vsc-kul-uhasselt'.wiceMemThreshold`   | `'239 GB'` |
 
 ## Build & test
 

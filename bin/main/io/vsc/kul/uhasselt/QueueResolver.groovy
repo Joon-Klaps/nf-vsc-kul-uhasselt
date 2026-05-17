@@ -233,4 +233,5 @@ class QueueResolver {
         final i = queue.indexOf(',')
         return i < 0 ? queue : queue.substring(0, i)
     }
+
 }

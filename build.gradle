@@ -1,5 +1,5 @@
 plugins {
-    id 'io.nextflow.nextflow-plugin' version '1.0.0-beta.10'
+    id 'io.nextflow.nextflow-plugin' version '1.0.0-beta.12'
 }
 
 version = '0.1.0'
@@ -9,51 +9,20 @@ nextflowPlugin {
 
     provider = 'VSC KU Leuven / UHasselt'
     className = 'io.vsc.kul.uhasselt.VscKulUhasseltPlugin'
-    useDefaultDependencies = false
     extensionPoints = [
         'io.vsc.kul.uhasselt.VscKulUhasseltExecutor',
     ]
-}
 
-sourceSets {
-    main.java.srcDirs = []
-    main.groovy.srcDirs = ['src/main/groovy']
-    main.resources.srcDirs = ['src/main/resources']
-    test.groovy.srcDirs = ['src/test/groovy']
-    test.java.srcDirs = []
-    test.resources.srcDirs = ['src/test/resources']
-}
-
-configurations {
-    runtimeClasspath.exclude group: 'org.slf4j', module: 'slf4j-api'
-}
-
-ext {
-    nextflowVersion = '25.04.0'
+    test {
+        useJUnitPlatform()
+        jvmArgs += [
+            '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.security=ALL-UNNAMED',
+        ]
+    }
 }
 
 dependencies {
-    compileOnly "io.nextflow:nextflow:$nextflowVersion"
-    compileOnly 'org.slf4j:slf4j-api:2.0.17'
-    compileOnly 'org.pf4j:pf4j:3.12.0'
-
-    testImplementation "org.apache.groovy:groovy:4.0.26"
-    testImplementation "org.apache.groovy:groovy-nio:4.0.26"
-    testImplementation "io.nextflow:nextflow:$nextflowVersion"
-    testImplementation "org.apache.groovy:groovy-test:4.0.26"
-    testImplementation "org.spockframework:spock-core:2.3-groovy-4.0"
-    testImplementation "org.spockframework:spock-junit4:2.3-groovy-4.0"
-}
-
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-        showStandardStreams = true
-        exceptionFormat "full"
-    }
-    jvmArgs([
-        '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-        '--add-opens', 'java.base/java.security=ALL-UNNAMED'
-    ])
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
+    testRuntimeOnly    'org.junit.platform:junit-platform-launcher:1.10.0'
 }
