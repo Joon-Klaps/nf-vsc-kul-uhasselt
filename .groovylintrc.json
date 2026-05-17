@@ -15,6 +15,18 @@
         },
         "JUnitTestMethodWithoutAssert": {
             "enabled": false
+        },
+        "MethodName": {
+            "enabled": false
+        },
+        "Instanceof": {
+            "enabled": false
+        },
+        "ParameterCount": {
+            "enabled": false
+        },
+        "LineLength": {
+            "length": 200
         }
     }
 }

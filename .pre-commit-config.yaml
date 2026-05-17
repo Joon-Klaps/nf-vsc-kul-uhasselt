@@ -12,4 +12,6 @@ repos:
     rev: "v16.2.0"
     hooks:
       - id: format-npm-groovy-lint
+        args: ["--failon", "warning"]
       - id: fix-npm-groovy-lint
+        args: ["--failon", "warning"]

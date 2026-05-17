@@ -55,7 +55,11 @@ class QueueResolver {
             case 'wice':       return resolveWice(memory, time, account)
             case 'wice_gpu':   return resolveWiceGpu(memory, time, cpus, accelerators, account)
             case 'superdome':  return resolveSuperdome(time, account)
-            default: throw new IllegalArgumentException("Unknown VSC cluster: '${cluster}'. Expected one of: genius, genius_gpu, wice, wice_gpu, superdome.")
+            default:
+                throw new IllegalArgumentException(
+                    "Unknown VSC cluster: '${cluster}'. " +
+                    'Expected one of: genius, genius_gpu, wice, wice_gpu, superdome.'
+                )
         }
     }
 
@@ -88,7 +92,13 @@ class QueueResolver {
 
     // -------- genius (GPU) --------
 
-    QueueDecision resolveGeniusGpu(MemoryUnit memory, Duration time, Integer cpus, Integer accelerators, String account) {
+    QueueDecision resolveGeniusGpu(
+        MemoryUnit memory,
+        Duration time,
+        Integer cpus,
+        Integer accelerators,
+        String account
+    ) {
         final highMem = isHighMem(memory, geniusMemThreshold)
         final longRun = isLongRun(time)
         final hasDedicatedGpu = dedicatedQueues.contains('dedicated_rega_gpu')
@@ -128,7 +138,9 @@ class QueueResolver {
             if (longRun && hasDedicated) {
                 queue = 'dedicated_big_bigmem'
             } else {
-                cappedTime = capTime(time)
+                if (longRun) {
+                    cappedTime = capTime(time)
+                }
                 queue = 'bigmem,hugemem'
             }
         } else {
@@ -152,7 +164,13 @@ class QueueResolver {
 
     // -------- wice (GPU) --------
 
-    QueueDecision resolveWiceGpu(MemoryUnit memory, Duration time, Integer cpus, Integer accelerators, String account) {
+    QueueDecision resolveWiceGpu(
+        MemoryUnit memory,
+        Duration time,
+        Integer cpus,
+        Integer accelerators,
+        String account
+    ) {
         final highMem = isHighMem(memory, wiceMemThreshold)
         final longRun = isLongRun(time)
         final hasDedicated = highMem
@@ -209,22 +227,30 @@ class QueueResolver {
     // -------- helpers --------
 
     private boolean isHighMem(MemoryUnit memory, MemoryUnit threshold) {
-        if (memory == null) return false
+        if (memory == null) {
+            return false
+        }
         return memory.toBytes() >= threshold.toBytes()
     }
 
     private boolean isLongRun(Duration time) {
-        if (time == null) return false
+        if (time == null) {
+            return false
+        }
         return time.toMillis() >= timeThreshold.toMillis()
     }
 
     private Duration capTime(Duration time) {
-        if (time == null || time.toMillis() <= timeThreshold.toMillis()) return time
+        if (time == null || time.toMillis() <= timeThreshold.toMillis()) {
+            return time
+        }
         return timeThreshold
     }
 
     static int inferGpuCount(Integer cpus, Integer accelerators, int cpusPerGpu) {
-        if (accelerators != null) return accelerators
+        if (accelerators != null) {
+            return accelerators
+        }
         final c = cpus ?: 1
         return Math.max(1, (int) Math.floor((double) c / cpusPerGpu))
     }

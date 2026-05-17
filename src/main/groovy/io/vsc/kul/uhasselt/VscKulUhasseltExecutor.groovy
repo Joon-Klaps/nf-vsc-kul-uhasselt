@@ -47,10 +47,17 @@ class VscKulUhasseltExecutor extends SlurmExecutor {
 
         this.resolver = new QueueResolver(timeThreshold, geniusMemThreshold, wiceMemThreshold, dedicated)
 
-        log.debug "[vsc-kul-uhasselt] scratchDir='${scratchDir}' account='${this.account}' dedicatedQueues=${dedicated} timeThreshold=${timeThreshold} geniusMemThreshold=${geniusMemThreshold} wiceMemThreshold=${wiceMemThreshold}"
+        log.debug(
+            "[vsc-kul-uhasselt] scratchDir='${scratchDir}' account='${this.account}' " +
+            "dedicatedQueues=${dedicated} timeThreshold=${timeThreshold} " +
+            "geniusMemThreshold=${geniusMemThreshold} wiceMemThreshold=${wiceMemThreshold}"
+        )
 
         if (!this.account) {
-            log.warn "[vsc-kul-uhasselt] No SLURM account configured. Set the SLURM_ACCOUNT env var or executor.'vsc-kul-uhasselt'.account in your config."
+            log.warn(
+                '[vsc-kul-uhasselt] No SLURM account configured. ' +
+                "Set the SLURM_ACCOUNT env var or executor.'vsc-kul-uhasselt'.account in your config."
+            )
         }
     }
 
@@ -67,7 +74,8 @@ class VscKulUhasseltExecutor extends SlurmExecutor {
             return
         }
 
-        final cluster = (task.config.ext?.get('vscCluster')) as String
+        final ext = task.config.ext as Map
+        final cluster = ext?.get('vscCluster') as String
         if (!cluster) {
             // No vsc-specific branch requested for this process; leave task.config alone.
             return
@@ -83,10 +91,14 @@ class VscKulUhasseltExecutor extends SlurmExecutor {
 
         task.config.put('queue',          decision.queue)
         task.config.put('clusterOptions', decision.clusterOptions)
-        task.config.put('beforeScript',   "module load cluster/${moduleClusterFor(cluster)}/${decision.moduleLoadQueue}".toString())
+        final beforeScript = "module load cluster/${moduleClusterFor(cluster)}/${decision.moduleLoadQueue}"
+        task.config.put('beforeScript', beforeScript.toString())
 
         if (decision.cappedTime != null) {
-            log.warn "[vsc-kul-uhasselt] Capping requested time ${time} to ${decision.cappedTime} for task '${task.name}' (no dedicated long-run queue available on '${cluster}')."
+            log.warn(
+                "[vsc-kul-uhasselt] Capping requested time ${time} to ${decision.cappedTime} " +
+                "for task '${task.name}' (no dedicated long-run queue available on '${cluster}')."
+            )
             task.config.put('time', decision.cappedTime)
         }
     }
@@ -111,17 +123,23 @@ class VscKulUhasseltExecutor extends SlurmExecutor {
     }
 
     private static Set<String> parseDedicatedQueues(String csv) {
-        if (!csv) return [] as Set<String>
+        if (!csv) {
+            return [] as Set<String>
+        }
         return (csv.split(',').collect { it.trim() }.findAll { it } as Set<String>)
     }
 
     private static Duration parseDuration(Object v) {
-        if (v instanceof Duration) return (Duration) v
+        if (v instanceof Duration) {
+            return (Duration) v
+        }
         return Duration.of(v.toString())
     }
 
     private static MemoryUnit parseMemory(Object v) {
-        if (v instanceof MemoryUnit) return (MemoryUnit) v
+        if (v instanceof MemoryUnit) {
+            return (MemoryUnit) v
+        }
         return MemoryUnit.of(v.toString())
     }
 
